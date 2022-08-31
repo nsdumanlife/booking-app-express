@@ -1,8 +1,7 @@
 {
-	"name": "sose-express",
+	"name": "booking-app-express",
 	"version": "0.0.0",
-	"private": true,
-	"description": "Express Starter Template with Gitpod configuration",
+	"description": "It is my project for Coyotiv Software Engineering School.",
 	"license": "MIT",
 	"scripts": {
 		"start": "node ./bin/www",
