@@ -1,7 +1,8 @@
 const getDays = require('./get-booking-days')
 
 class Bungalow {
-	constructor(location, capacity, price, owner) {
+	constructor(name, location, capacity, price, owner) {
+		this.name = name
 		this.location = location
 		this.bookings = []
 		this.bookedDates = []
