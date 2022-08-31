@@ -1,6 +1,75 @@
-@startuml Person 
-class Person {
-  name: string
-  age: number
+@startuml Bungalow Booking Class Diagram
+class User{
+    firstName: string
+    lastName: string
+    email: string
+    password: string
+    age: number
+    bookings: [Booking]
+    reviews: [Review]
+    ownedBungalows: [Bungalow]
+
+    constructor(firstName: string, lastName: string, email: string, age: number)
+    book(bungalow: Bungalow, checkInDate: Date, checkOutDate: Date)
+    review(booking: Booking)
+    pay()
+    cancelBooking(booking: Booking)
+    signUp(firstName: string, lastName: string, email: string, password: string)
+
+    setPrice(bungalow: Bungalow, price: number)
+    disableDates(bungalow: Bungalow, startDate: Date, endDate: Date)
+    deleteBungalow(bungalow: Bungalow)
+    addBungalow()
 }
+
+class Bungalow{
+    location: string
+    capacity: number
+    price: number
+    owner: Owner
+    bookings: [Booking]
+    bookedDates: [Date]
+    reviews: [Review]
+    rates: [number]
+    photos: [string]
+    services: [string]
+    get rating(): number
+
+    checkAvailability(checkInDate: Date, checkOutDate: Date,)
+
+}
+
+class Booking{
+    id: number
+    guest: User
+    bungalow: Bungalow
+    checkInDate: Date
+    checkOutDate: Date
+    review: Review
+    status: string
+    get bookingDates() : [string]
+
+    constructor(guest: User, bungalow: Bungalow, checkInDate: Date, checkOutDate: Date)
+    totalPrice(price: number, duration: number)
+}
+
+class Review {
+    body: string
+    rating: number
+    owner: User
+    booking: Booking
+}
+
+class Payment{
+    amount: number
+}
+
+Bungalow o-> Review
+User o--> Review
+User "1" o-->"0..*" Booking
+Booking "1" o-->"1" User
+Booking "1" <--o "1" Bungalow
+Booking o--> Bungalow
+Booking o-> Payment
+
 @enduml
