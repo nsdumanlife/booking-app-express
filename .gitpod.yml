@@ -1,0 +1,73 @@
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - name: read
+    command: gp ports await 23000 && gp open README.md
+
+  - name: plantuml-server
+    before: # plantuml server http://localhost:8080
+      docker run -d -p 8080:8080 plantuml/plantuml-server:tomcat
+
+  - name: dependencies
+    init: | # runs during prebuild
+      npm install -g npm@latest
+      npm install -g nodemon
+      npm install
+    command: gp sync-done dependencies
+
+  - name: start
+    command: |
+      gp sync-await dependencies
+      npm run dev
+
+# List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
+ports:
+  - port: 3000 # default express
+    onOpen: ignore
+    visibility: private
+  - port: 4000 # default from .env file
+    onOpen: ignore
+    visibility: private
+  - port: 5500 # liveserver
+    onOpen: ignore
+    visibility: private
+  - port: 8080 # plantuml server http://localhost:8080
+    onOpen: ignore
+    visibility: private
+
+# list of vscode extensions from https://open-vsx.org which should be installed for users of this workspace
+vscode:
+  extensions:
+    # Code Spell Checker
+    - streetsidesoftware.code-spell-checker
+    # Docker
+    - ms-azuretools.vscode-docker
+    # ENV
+    - IronGeek.vscode-env
+    # Eslint
+    - dbaeumer.vscode-eslint
+    # GitLens
+    - eamodio.gitlens
+    # JavaScript (ES6) code snippets
+    - xabikos.JavaScriptSnippets
+    # Live Server
+    - ritwickdey.liveserver
+    # NPM Intellisense
+    - christian-kohler.npm-intellisense
+    # Path Intellisense
+    - christian-kohler.path-intellisense
+    # Plantuml
+    - jebbs.plantuml
+    # Prettier
+    - esbenp.prettier-vscode
+    # REST Client
+    - humao.rest-client
+    # Vetur
+    - octref.vetur
+    # vscode-icons
+    - vscode-icons-team.vscode-icons
+
+#
+github:
+  prebuilds:
+    # enable checks fail when the prebuild failed
+    addCheck: prevent-merge-on-error
