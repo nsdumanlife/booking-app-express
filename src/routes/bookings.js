@@ -1,9 +1,9 @@
 const express = require('express')
-
-const router = express.Router()
-
+const flatted = require('flatted')
 const signUp = require('../models/sign-up')
 const Bungalow = require('../models/bungalow')
+
+const router = express.Router()
 
 const dogancay = new Bungalow('Dogancay', 'Geyve, Sakarya, Turkey', 5, 1250)
 const numan = signUp('Numan', 'Duman', 'nsduman@gmail.com', 29)
@@ -21,7 +21,7 @@ numan.book(dogancay, checkInDate2, checkOutDate2)
 
 /* GET bookings listing. */
 router.get('/', (req, res) => {
-	res.send(numan.bookings)
+	res.send(flatted.toJSON(numan.bookings))
 })
 
 module.exports = router
