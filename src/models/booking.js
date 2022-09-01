@@ -15,6 +15,10 @@ class Booking {
 	get bookingDays() {
 		return getDays(this.checkInDate, this.checkOutDate)
 	}
+
+	get totalPrice() {
+		return this.bungalow.price * this.bookingDays.length
+	}
 }
 
 module.exports = Booking
