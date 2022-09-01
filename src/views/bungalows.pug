@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  h2 Here are some lovely bungalows for your vacation
+
+  each bungalow in bungalows
+    h3 #{bungalow.name}
+    p #{bungalow.price} TRY
+    if bungalow.rating
+      p #{bungalow.rating}
