@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 	if (req.query.name) {
 		return res.send(bungalows.filter(bungalow => bungalow.name.toLowerCase() === req.query.name.toLowerCase()))
 	}
-	return res.render('bungalows', { title: `Bungalow Booking`, bungalows })
+	return res.render('bungalows', { title: `Rent a Bungalow for Your Next Escape`, bungalows })
 })
 
 router.get('/:bungalowId', (req, res) => {
