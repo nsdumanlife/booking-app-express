@@ -1,7 +1,9 @@
+const { v4: uuidv4 } = require('uuid')
 const getDays = require('./get-booking-days')
 
 class Bungalow {
 	constructor(name, location, capacity, price, owner) {
+		this.id = uuidv4()
 		this.name = name
 		this.location = location
 		this.bookings = []
@@ -20,14 +22,6 @@ class Bungalow {
 	get rating() {
 		return this.rates.reduce((sum, rate) => sum + rate, 0) / this.rates.length
 	}
-
-	// get bookedDates() {
-	//   return this.#bookedDates.slice()
-	// }
-
-	// set bookedDates(newDates) {
-	//   this.#bookedDates.concat(newDates)
-	// }
 
 	checkAvailability(checkInDate, checkOutDate) {
 		const newBookingDays = getDays(checkInDate, checkOutDate)
