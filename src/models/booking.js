@@ -1,5 +1,4 @@
 const { v4: uuidv4 } = require('uuid')
-const getDuration = require('./get-duration')
 const getDays = require('./get-booking-days')
 
 class Booking {
@@ -13,12 +12,12 @@ class Booking {
 		this.isReviewed = false
 	}
 
-	get duration() {
-		return getDuration(this.checkInDate, this.checkOutDate)
-	}
-
 	get bookingDays() {
 		return getDays(this.checkInDate, this.checkOutDate)
+	}
+
+	get totalPrice() {
+		return this.bungalow.price * this.bookingDays.length
 	}
 }
 
