@@ -30,4 +30,10 @@ class Bungalow {
 	}
 }
 
-module.exports = Bungalow
+const tepe = new Bungalow('Tepe', 'Sapanca, Sakarya', 8, 950, 'Faruk')
+const lion = new Bungalow('Lion', 'Kumbag, Tekirdag', 4, 1250, 'Faruk')
+const dogancay = new Bungalow('Dogancay', 'Geyve, Sakarya, Turkey', 5, 1150, 'Faruk')
+const oxygen = new Bungalow('Oxygen', 'Geyve, Sakarya', 8, 950, 'Numan')
+const bungalows = [tepe, lion, dogancay, oxygen]
+
+module.exports = { Bungalow, bungalows }
