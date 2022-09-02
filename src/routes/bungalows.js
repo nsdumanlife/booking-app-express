@@ -1,15 +1,8 @@
 const express = require('express')
+const flatted = require('flatted')
+const { bungalows } = require('../models/bungalow')
 
 const router = express.Router()
-
-const Bungalow = require('../models/bungalow')
-
-const tepe = new Bungalow('Tepe', 'Sapanca, Sakarya', 8, 950, 'Numan')
-const jojo = new Bungalow('Jojo', 'Sapanca, Sakarya', 6, 1150, 'Numan')
-const lion = new Bungalow('Lion', 'Kumbag, Tekirdag', 4, 1250, 'Numan')
-const oxygen = new Bungalow('Oxygen', 'Geyve, Sakarya', 8, 950, 'Numan')
-
-const bungalows = [tepe, jojo, lion, oxygen]
 
 /* GET bungalows listing. */
 router.get('/', (req, res) => {
@@ -22,7 +15,7 @@ router.get('/', (req, res) => {
 router.get('/:bungalowId', (req, res) => {
 	const bungalow = bungalows[req.params.bungalowId]
 
-	if (bungalow) res.send(bungalow)
+	if (bungalow) res.send(flatted.toJSON(bungalow))
 	else res.sendStatus(404)
 })
 
