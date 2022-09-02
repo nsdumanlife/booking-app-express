@@ -46,10 +46,30 @@ class User {
 
 	pay() {}
 
-	cancelBooking() {
+	cancelBooking(booking) {
 		// take booking as a parameter
 		// remove the booked dates from bungalow's calendar
-		// update the booking status to cancelled
+		const checkInDateStr = `${booking.checkinDate.getDate()}-${
+			booking.checkinDate.getMonth() + 1
+		}-${booking.checkinDate.getFullYear()}`
+
+		const indexOfCheckInDate = booking.bungalow.bookedDates.indexOf(checkInDateStr)
+
+		booking.bungalow.bookedDates.splice(indexOfCheckInDate, booking.bookingDays.length)
+
+		// // set booking status to cancelled
+		// booking.status = 'Cancelled'
+
+		// remove booking from bungalow bookings
+		const indexOfBungalowBooking = booking.bungalow.bookings.indexOf(booking)
+
+		booking.bungalow.bookings.splice(indexOfBungalowBooking, 1)
+
+		// remove from user's bookings
+		const indexOfUserBooking = this.bookings.indexOf(booking)
+
+		this.bookings.splice(indexOfUserBooking, 1)
+
 		// refund money to user
 		// send email to user
 	}
