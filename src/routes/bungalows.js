@@ -1,5 +1,5 @@
 const express = require('express')
-const flatted = require('flatted')
+// const flatted = require('flatted')
 const { bungalows } = require('../models/bungalow')
 
 const router = express.Router()
@@ -13,9 +13,10 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:bungalowId', (req, res) => {
-	const bungalow = bungalows[req.params.bungalowId]
+	const selectedBungalow = bungalows.find(bungalow => bungalow.id === req.params.bungalowId)
 
-	if (bungalow) res.send(flatted.toJSON(bungalow))
+	// if (bungalow) res.send(flatted.toJSON(bungalow))
+	if (selectedBungalow) res.render('bungalow', { title: `${selectedBungalow.name}`, selectedBungalow })
 	else res.sendStatus(404)
 })
 

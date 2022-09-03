@@ -6,7 +6,11 @@ block content
   h2 Here are some lovely bungalows
 
   each bungalow in bungalows
-    h3 #{bungalow.name}
-    p #{bungalow.price} TRY
-    if bungalow.rating
-      p #{bungalow.rating}
+    .bungalow
+      a(href=`/bungalows/${bungalow.id}`)
+        form(action="submit")
+          h3 #{bungalow.name}
+          p #{bungalow.price} TRY
+          if bungalow.rating
+            p #{bungalow.rating}
+      button(type='button') Book Now
