@@ -6,3 +6,8 @@ body {
 a {
   color: #00B7FF;
 }
+
+.bungalow{
+  border: 2px solid;
+  margin-bottom: 8px;
+}
