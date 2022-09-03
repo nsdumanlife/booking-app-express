@@ -1,0 +1,22 @@
+extends layout
+
+block content
+    h1= title
+    if bungalow.rating
+        p #{bungalow.rating}
+    p #{bungalow.location}
+    each image in bungalow.images
+        img(src=`${image.src}`, alt= `${image.alt}`)
+    h2 Overview
+    p #{bungalow.capacity} guests
+    h4 Services
+    each service in bungalow.services
+        ul
+            li #{service}
+    .book-card
+        h4 #{bungalow.price} TRY / night
+        p Check-in date
+        input(type='date' value='2022-09-01' class='check-in-date')
+        p Check-out date
+        input(type='date' value='2022-09-01' class='check-out-date')
+        button(type='button') Book
