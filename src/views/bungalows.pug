@@ -2,7 +2,10 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  span Check-in date&nbsp;
+  input(type='date' value='2022-09-01')
+  span Check-out date&nbsp;
+  input(type='date' value='2022-09-01')
   h2 Here are some lovely bungalows
 
   each bungalow in bungalows
@@ -13,4 +16,4 @@ block content
           p #{bungalow.price} TRY
           if bungalow.rating
             p #{bungalow.rating}
-      button(type='button') Book Now
+      button(type='button' onclick=`${user.book}`) Book Now
