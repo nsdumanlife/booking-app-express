@@ -9,6 +9,7 @@ class Booking {
 		this.checkInDate = checkInDate
 		this.checkOutDate = checkOutDate
 		this.isReviewed = false
+		this.cancelled = false
 	}
 
 	get bookingDays() {
@@ -21,8 +22,13 @@ class Booking {
 
 	// completed, cancelled, upcoming
 	get status() {
-		if (Date.now() - this.checkOutDate > 0) return 'Completed'
+		if (Date.now() > this.checkOutDate) return 'Completed'
 		return 'Upcoming'
+	}
+
+	cancel() {
+		if (this.cancelled) throw new Error('This booking is already cancelled.')
+		this.cancelled = true
 	}
 }
 
