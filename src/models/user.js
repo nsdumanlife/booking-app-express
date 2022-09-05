@@ -46,7 +46,6 @@ class User {
 	pay() {}
 
 	cancelBooking(booking) {
-		// take booking as a parameter
 		// remove the booked dates from bungalow's calendar
 		const checkInDateStr = `${booking.checkinDate.getDate()}-${
 			booking.checkinDate.getMonth() + 1
@@ -56,7 +55,7 @@ class User {
 
 		booking.bungalow.bookedDates.splice(indexOfCheckInDate, booking.bookingDays.length)
 
-		// // set booking status to cancelled
+		// set booking status to cancelled
 		booking.cancel()
 
 		// remove booking from bungalow bookings
