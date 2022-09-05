@@ -11,7 +11,6 @@ class Bungalow {
 		this.capacity = capacity
 		this.price = price
 		this.reviews = [] // user's reviews
-		this.rates = []
 		this.images = []
 		this.services = [] // internet, barbecue,hot tub, pool, hot water, kitchen etc.
 
@@ -19,7 +18,9 @@ class Bungalow {
 	}
 
 	get rating() {
-		return this.rates.reduce((sum, rate) => sum + rate, 0) / this.rates.length
+		const sumOfReviewsRates = this.reviews.reduce((sum, review) => sum + Number(review.rate), 0)
+
+		return Math.ceil(sumOfReviewsRates / this.reviews.length)
 	}
 
 	checkAvailability(checkInDate, checkOutDate) {
