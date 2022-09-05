@@ -8,7 +8,6 @@ class Booking {
 		this.bungalow = bungalow
 		this.checkInDate = checkInDate
 		this.checkOutDate = checkOutDate
-		this.status = 'confirmed' // confirmed, cancelled
 		this.isReviewed = false
 	}
 
@@ -18,6 +17,12 @@ class Booking {
 
 	get totalPrice() {
 		return this.bungalow.price * this.bookingDays.length
+	}
+
+	// completed, cancelled, upcoming
+	get status() {
+		if (Date.now() - this.checkOutDate > 0) return 'Completed'
+		return 'Upcoming'
 	}
 }
 

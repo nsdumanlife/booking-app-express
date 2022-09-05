@@ -1,6 +1,5 @@
 const { v4: uuidv4 } = require('uuid')
 const getDays = require('./get-booking-days')
-const { imagesOfOxygen } = require('./image')
 
 class Bungalow {
 	constructor(name, location, capacity, price, owner) {
@@ -30,12 +29,4 @@ class Bungalow {
 	}
 }
 
-const tepe = new Bungalow('Tepe', 'Sapanca, Sakarya', 8, 950, 'Faruk')
-const lion = new Bungalow('Lion', 'Kumbag, Tekirdag', 4, 1250, 'Faruk')
-const dogancay = new Bungalow('Dogancay', 'Geyve, Sakarya, Turkey', 5, 1150, 'Faruk')
-const oxygen = new Bungalow('Oxygen', 'Geyve, Sakarya', 8, 950, 'Faruk')
-oxygen.images.push(...imagesOfOxygen)
-oxygen.services.push('internet', 'barbecue', 'hot tub')
-const bungalows = [tepe, lion, dogancay, oxygen]
-
-module.exports = { Bungalow, bungalows }
+module.exports = Bungalow

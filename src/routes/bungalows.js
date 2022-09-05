@@ -1,7 +1,7 @@
 const express = require('express')
 // const flatted = require('flatted')
-const { bungalows } = require('../models/bungalow')
-const { numan } = require('../models/sign-up')
+const { bungalows } = require('../models')
+const { numan } = require('../models')
 
 const router = express.Router()
 
