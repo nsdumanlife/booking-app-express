@@ -1,4 +1,5 @@
 const Booking = require('./booking')
+const Review = require('./review')
 
 class User {
 	constructor(firstName, lastName, email, age) {
@@ -8,7 +9,7 @@ class User {
 		this.age = age
 		this.bookings = []
 		this.reviews = []
-		// user id
+		this.ownedBungalows = []
 	}
 
 	get profile() {
@@ -37,11 +38,9 @@ class User {
 	}
 
 	review(bungalow, message, rate) {
-		// if (bungalow.guests.includes(this)) {
-		//   bungalow.reviews.push(message)
-		//   bungalow.rates.push(rate)
-		//   this.reviews.push(message)
-		// }
+		const review = new Review(message, rate, this)
+
+		bungalow.reviews.push(review)
 	}
 
 	pay() {}
@@ -58,7 +57,7 @@ class User {
 		booking.bungalow.bookedDates.splice(indexOfCheckInDate, booking.bookingDays.length)
 
 		// // set booking status to cancelled
-		// booking.status = 'Cancelled'
+		booking.cancel()
 
 		// remove booking from bungalow bookings
 		const indexOfBungalowBooking = booking.bungalow.bookings.indexOf(booking)
