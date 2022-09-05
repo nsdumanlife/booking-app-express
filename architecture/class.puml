@@ -3,7 +3,6 @@ class User{
     firstName: string
     lastName: string
     email: string
-    password: string
     age: number
     bookings: [Booking]
     reviews: [Review]
@@ -11,7 +10,7 @@ class User{
 
     constructor(firstName: string, lastName: string, email: string, age: number)
     book(bungalow: Bungalow, checkInDate: Date, checkOutDate: Date)
-    review(booking: Booking)
+    review(bungalow: Bungalow, text: string, rate: number)
     pay()
     cancelBooking(booking: Booking)
     signUp(firstName: string, lastName: string, email: string, password: string)
@@ -19,19 +18,20 @@ class User{
     setPrice(bungalow: Bungalow, price: number)
     disableDates(bungalow: Bungalow, startDate: Date, endDate: Date)
     deleteBungalow(bungalow: Bungalow)
-    addBungalow()
+    createBungalow(location: string, name: string, price: number, capacity: number)
 }
 
 class Bungalow{
+    id: number
+    name: string
     location: string
     capacity: number
     price: number
-    owner: Owner
+    owner: User
     bookings: [Booking]
     bookedDates: [Date]
     reviews: [Review]
-    rates: [number]
-    photos: [string]
+    images: [string]
     services: [string]
     get rating(): number
 
@@ -46,26 +46,27 @@ class Booking{
     checkInDate: Date
     checkOutDate: Date
     review: Review
-    status: string
+    cancelled: boolean
+    get status(): string
     get bookingDates() : [string]
+    get totalPrice(): number
 
     constructor(guest: User, bungalow: Bungalow, checkInDate: Date, checkOutDate: Date)
-    totalPrice(price: number, duration: number)
+    cancel()
 }
 
 class Review {
-    body: string
-    rating: number
-    owner: User
-    booking: Booking
+    message: string
+    rate: number
+    author: User
 }
 
 class Payment{
     amount: number
 }
 
-Bungalow o-> Review
-User o--> Review
+Bungalow *- Review
+User --> Review
 User "1" o-->"0..*" Booking
 Booking "1" o-->"1" User
 Booking "1" <--o "1" Bungalow
