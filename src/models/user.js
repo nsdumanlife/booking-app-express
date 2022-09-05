@@ -1,4 +1,5 @@
 const Booking = require('./booking')
+const Review = require('./review')
 
 class User {
 	constructor(firstName, lastName, email, age) {
@@ -8,7 +9,7 @@ class User {
 		this.age = age
 		this.bookings = []
 		this.reviews = []
-		// user id
+		this.ownedBungalows = []
 	}
 
 	get profile() {
@@ -37,17 +38,14 @@ class User {
 	}
 
 	review(bungalow, message, rate) {
-		// if (bungalow.guests.includes(this)) {
-		//   bungalow.reviews.push(message)
-		//   bungalow.rates.push(rate)
-		//   this.reviews.push(message)
-		// }
+		const review = new Review(message, rate, this)
+
+		bungalow.reviews.push(review)
 	}
 
 	pay() {}
 
 	cancelBooking(booking) {
-		// take booking as a parameter
 		// remove the booked dates from bungalow's calendar
 		const checkInDateStr = `${booking.checkinDate.getDate()}-${
 			booking.checkinDate.getMonth() + 1
@@ -57,8 +55,8 @@ class User {
 
 		booking.bungalow.bookedDates.splice(indexOfCheckInDate, booking.bookingDays.length)
 
-		// // set booking status to cancelled
-		// booking.status = 'Cancelled'
+		// set booking status to cancelled
+		booking.cancel()
 
 		// remove booking from bungalow bookings
 		const indexOfBungalowBooking = booking.bungalow.bookings.indexOf(booking)

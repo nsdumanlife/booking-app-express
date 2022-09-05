@@ -8,19 +8,19 @@ class Bungalow {
 		this.location = location
 		this.bookings = []
 		this.bookedDates = []
-		this.city = ''
 		this.capacity = capacity
 		this.price = price
 		this.reviews = [] // user's reviews
-		this.rates = [] // average of stars are given by users
-		this.photos = [] //
+		this.images = []
 		this.services = [] // internet, barbecue,hot tub, pool, hot water, kitchen etc.
 
 		this.owner = owner
 	}
 
 	get rating() {
-		return this.rates.reduce((sum, rate) => sum + rate, 0) / this.rates.length
+		const sumOfReviewsRates = this.reviews.reduce((sum, review) => sum + Number(review.rate), 0)
+
+		return Math.ceil(sumOfReviewsRates / this.reviews.length)
 	}
 
 	checkAvailability(checkInDate, checkOutDate) {
@@ -30,10 +30,4 @@ class Bungalow {
 	}
 }
 
-const tepe = new Bungalow('Tepe', 'Sapanca, Sakarya', 8, 950, 'Faruk')
-const lion = new Bungalow('Lion', 'Kumbag, Tekirdag', 4, 1250, 'Faruk')
-const dogancay = new Bungalow('Dogancay', 'Geyve, Sakarya, Turkey', 5, 1150, 'Faruk')
-const oxygen = new Bungalow('Oxygen', 'Geyve, Sakarya', 8, 950, 'Numan')
-const bungalows = [tepe, lion, dogancay, oxygen]
-
-module.exports = { Bungalow, bungalows }
+module.exports = Bungalow

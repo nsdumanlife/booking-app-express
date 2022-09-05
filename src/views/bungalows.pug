@@ -2,11 +2,18 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
-  h2 Here are some lovely bungalows
+  form(action=`/bookings`, method='post')
+    span Check-in date&nbsp;
+    input(type='date' name='checkInDate' value='2022-09-01')
+    span Check-out date&nbsp;
+    input(type='date' name='checkOutDate' value='2022-09-01')
+    h2 Here are some lovely bungalows
 
-  each bungalow in bungalows
-    h3 #{bungalow.name}
-    p #{bungalow.price} TRY
-    if bungalow.rating
-      p #{bungalow.rating}
+    each bungalow in bungalows
+      .bungalow
+        a(href=`/bungalows/${bungalow.id}`)
+          h3 #{bungalow.name}
+          p #{bungalow.price} TRY
+          if bungalow.rating
+            p #{bungalow.rating}
+          input(type="submit", value="Book Now")

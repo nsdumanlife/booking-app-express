@@ -8,8 +8,8 @@ class Booking {
 		this.bungalow = bungalow
 		this.checkInDate = checkInDate
 		this.checkOutDate = checkOutDate
-		this.status = 'confirmed' // confirmed, cancelled
 		this.isReviewed = false
+		this.cancelled = false
 	}
 
 	get bookingDays() {
@@ -18,6 +18,17 @@ class Booking {
 
 	get totalPrice() {
 		return this.bungalow.price * this.bookingDays.length
+	}
+
+	// completed, cancelled, upcoming
+	get status() {
+		if (Date.now() > this.checkOutDate) return 'Completed'
+		return 'Upcoming'
+	}
+
+	cancel() {
+		if (this.cancelled) throw new Error('This booking is already cancelled.')
+		this.cancelled = true
 	}
 }
 
