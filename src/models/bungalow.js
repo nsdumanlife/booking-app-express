@@ -33,6 +33,24 @@ class Bungalow {
 		this.bookings.push(booking)
 		this.bookedDates.push(...booking.bookingDays)
 	}
+
+	removeBooking(booking) {
+		// remove the booked dates from bungalow's calendar
+		const checkInDateStr = getDays(booking.checkInDate, booking.checkOutDate)
+
+		const indexOfCheckInDate = this.bookedDates.indexOf(checkInDateStr)
+
+		this.bookedDates.splice(indexOfCheckInDate, booking.bookingDays.length)
+
+		// remove booking from bungalow bookings
+		const indexOfBungalowBooking = this.bookings.indexOf(booking)
+
+		this.bookings.splice(indexOfBungalowBooking, 1)
+	}
+
+	addService(service, owner) {
+		if (this.owner === owner) this.services.push(service)
+	}
 }
 
 module.exports = Bungalow
