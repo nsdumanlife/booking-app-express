@@ -1,5 +1,6 @@
 const Booking = require('./booking')
 const Review = require('./review')
+const Bungalow = require('./bungalow')
 const getDays = require('../helper/get-booking-days')
 
 class User {
@@ -67,6 +68,14 @@ class User {
 
 		// refund money to user
 		// send email to user
+	}
+
+	createBungalow(name, location, capacity, price) {
+		const bungalow = new Bungalow(name, location, capacity, price, this)
+
+		this.ownedBungalows.push(bungalow)
+
+		return bungalow
 	}
 }
 

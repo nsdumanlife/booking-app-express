@@ -27,7 +27,7 @@ numan.book(bungalows[0], checkInDate, checkOutDate)
 numan.book(bungalows[1], checkInDate1, checkOutDate1)
 numan.book(bungalows[2], checkInDate2, checkOutDate2)
 // numan.cancelBooking(numan.bookings[0])
-
+numan.createBungalow('turtle', 'Akbuk, Mugla', 2, 1750)
 faruk.book(bungalows[3], checkInDateFaruk, checkOutDateFaruk)
 faruk.review(bungalows[3], 'That was an amazing vacation!', 5)
 
