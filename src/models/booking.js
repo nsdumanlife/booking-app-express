@@ -28,7 +28,10 @@ class Booking {
 
 	cancel() {
 		if (this.cancelled) throw new Error('This booking is already cancelled.')
+
 		this.cancelled = true
+		// remove booking from bungalow's booking list
+		this.bungalow.removeBooking(this)
 	}
 }
 

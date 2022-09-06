@@ -1,7 +1,6 @@
 const Booking = require('./booking')
 const Review = require('./review')
 const Bungalow = require('./bungalow')
-const getDays = require('../helper/get-booking-days')
 
 class User {
 	constructor(firstName, lastName, email, age) {
@@ -45,9 +44,6 @@ class User {
 	}
 
 	cancelBooking(booking) {
-		// remove booking from bungalow
-		booking.bungalow.removeBooking(booking)
-
 		// set booking status to cancelled
 		booking.cancel()
 
