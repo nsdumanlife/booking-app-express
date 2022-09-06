@@ -1,5 +1,6 @@
 const Booking = require('./booking')
 const Review = require('./review')
+const getDays = require('../helper/get-booking-days')
 
 class User {
 	constructor(firstName, lastName, email, age) {
@@ -45,9 +46,8 @@ class User {
 
 	cancelBooking(booking) {
 		// remove the booked dates from bungalow's calendar
-		const checkInDateStr = `${booking.checkinDate.getDate()}-${
-			booking.checkinDate.getMonth() + 1
-		}-${booking.checkinDate.getFullYear()}`
+
+		const checkInDateStr = getDays(booking.checkInDate, booking.checkOutDate)
 
 		const indexOfCheckInDate = booking.bungalow.bookedDates.indexOf(checkInDateStr)
 

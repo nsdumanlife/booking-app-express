@@ -1,4 +1,4 @@
-const signUp = require('./sign-up')
+const signUp = require('../helper/sign-up')
 const Bungalow = require('./bungalow')
 const { imagesOfOxygen } = require('./image')
 
@@ -30,5 +30,7 @@ numan.book(bungalows[2], checkInDate2, checkOutDate2)
 
 faruk.book(bungalows[3], checkInDateFaruk, checkOutDateFaruk)
 faruk.review(bungalows[3], 'That was an amazing vacation!', 5)
+
+console.log(numan)
 
 module.exports = { bungalows, users, numan, loggedInUser: numan }
