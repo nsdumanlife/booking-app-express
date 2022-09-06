@@ -1,4 +1,4 @@
-const User = require('./user')
+const User = require('../models/user')
 
 function signUp(firstName, lastName, email, age) {
 	// TODO: check that email address is available or not

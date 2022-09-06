@@ -3,7 +3,7 @@ extends layout
 block content
     h1= title
     if bungalow.rating
-        p #{bungalow.rating} star #{bungalow.reviews.length} review#{bungalow.reviews.length > 1 ? 's' : ''}
+        p #{bungalow.rating} star#{bungalow.rating > 1 ? 's' : ''} #{bungalow.reviews.length} review#{bungalow.reviews.length > 1 ? 's' : ''}
     p #{bungalow.location}
     each image in bungalow.images
         img(src=`${image.src}`, alt= `${image.alt}`)
@@ -14,7 +14,7 @@ block content
         ul
             li #{service}
     .book-card
-        form(action=`/bungalows/${bungalow.id}/bookings`, method='post')
+        form(action=`/bungalows/${bungalow.id}`, method='post')
             h4 #{bungalow.price} TRY / night
             label(for='checkInDate') Check-in date
             input#checkInDate(type='date' name='checkInDate' value='2022-09-10' )

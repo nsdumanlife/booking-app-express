@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid')
-const getDays = require('./get-booking-days')
+const getDays = require('../helper/get-booking-days')
 
 class Booking {
 	constructor(guest, bungalow, checkInDate, checkOutDate) {
