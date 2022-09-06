@@ -43,8 +43,6 @@ class User {
 		bungalow.reviews.push(review)
 	}
 
-	pay() {}
-
 	cancelBooking(booking) {
 		// remove the booked dates from bungalow's calendar
 		const checkInDateStr = `${booking.checkinDate.getDate()}-${
