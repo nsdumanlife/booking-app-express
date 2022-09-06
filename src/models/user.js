@@ -9,7 +9,7 @@ class User {
 		this.email = email
 		this.age = age
 		this.bookings = []
-		this.reviews = []
+
 		this.ownedBungalows = []
 	}
 
@@ -46,7 +46,6 @@ class User {
 
 	cancelBooking(booking) {
 		// remove the booked dates from bungalow's calendar
-
 		const checkInDateStr = getDays(booking.checkInDate, booking.checkOutDate)
 
 		const indexOfCheckInDate = booking.bungalow.bookedDates.indexOf(checkInDateStr)
