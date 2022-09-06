@@ -26,8 +26,9 @@ class User {
 		if (bungalow.checkAvailability(checkInDate, checkOutDate)) {
 			const newBooking = new Booking(this, bungalow, checkInDate, checkOutDate)
 
-			bungalow.bookings.push(newBooking)
-			bungalow.bookedDates.push(...newBooking.bookingDays)
+			bungalow.addBooking(newBooking)
+			// bungalow.bookings.push(newBooking)
+			// bungalow.bookedDates.push(...newBooking.bookingDays)
 			this.bookings.push(newBooking)
 
 			// TODO:
