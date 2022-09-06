@@ -45,20 +45,11 @@ class User {
 	}
 
 	cancelBooking(booking) {
-		// remove the booked dates from bungalow's calendar
-		const checkInDateStr = getDays(booking.checkInDate, booking.checkOutDate)
-
-		const indexOfCheckInDate = booking.bungalow.bookedDates.indexOf(checkInDateStr)
-
-		booking.bungalow.bookedDates.splice(indexOfCheckInDate, booking.bookingDays.length)
+		// remove booking from bungalow
+		booking.bungalow.removeBooking(booking)
 
 		// set booking status to cancelled
 		booking.cancel()
-
-		// remove booking from bungalow bookings
-		const indexOfBungalowBooking = booking.bungalow.bookings.indexOf(booking)
-
-		booking.bungalow.bookings.splice(indexOfBungalowBooking, 1)
 
 		// remove from user's bookings
 		const indexOfUserBooking = this.bookings.indexOf(booking)
