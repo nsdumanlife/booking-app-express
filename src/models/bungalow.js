@@ -28,6 +28,11 @@ class Bungalow {
 
 		return newBookingDays.every(date => !this.bookedDates.includes(date))
 	}
+
+	addBooking(booking) {
+		this.bookings.push(booking)
+		this.bookedDates.push(...booking.bookingDays)
+	}
 }
 
 module.exports = Bungalow
