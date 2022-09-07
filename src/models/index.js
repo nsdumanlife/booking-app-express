@@ -16,12 +16,12 @@ const bungalows = [tepe, lion, dogancay, oxygen]
 
 const checkInDate = new Date('10/22/2022')
 const checkOutDate = new Date('10/29/2022')
-const checkInDate1 = new Date('11/29/2022')
-const checkOutDate1 = new Date('12/02/2022')
-const checkInDate2 = new Date('01/29/2023')
-const checkOutDate2 = new Date('02/02/2023')
-const checkInDateFaruk = new Date('09/29/2022')
-const checkOutDateFaruk = new Date('10/02/2022')
+const checkInDate1 = new Date('12/01/2023')
+const checkOutDate1 = new Date('12/05/2023')
+const checkInDate2 = new Date('02/01/2023')
+const checkOutDate2 = new Date('02/03/2023')
+const checkInDateFaruk = new Date('10/17/2023')
+const checkOutDateFaruk = new Date('10/21/2023')
 
 numan.book(bungalows[0], checkInDate, checkOutDate)
 numan.book(bungalows[1], checkInDate1, checkOutDate1)
