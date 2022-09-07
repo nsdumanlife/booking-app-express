@@ -5,20 +5,20 @@ class User{
     email: string
     age: number
     bookings: [Booking]
-    reviews: [Review]
     ownedBungalows: [Bungalow]
 
     constructor(firstName: string, lastName: string, email: string, age: number)
     book(bungalow: Bungalow, checkInDate: Date, checkOutDate: Date)
     review(bungalow: Bungalow, text: string, rate: number)
-    pay()
+    pay(amount: number)
     cancelBooking(booking: Booking)
-    signUp(firstName: string, lastName: string, email: string, password: string)
 
     setPrice(bungalow: Bungalow, price: number)
     disableDates(bungalow: Bungalow, startDate: Date, endDate: Date)
     deleteBungalow(bungalow: Bungalow)
     createBungalow(location: string, name: string, price: number, capacity: number)
+    addService(bungalow: Bungalow, service: Service)
+    addMedia(bungalow: Bungalow, media: Media)
 }
 
 class Bungalow{
@@ -31,11 +31,14 @@ class Bungalow{
     bookings: [Booking]
     bookedDates: [Date]
     reviews: [Review]
-    images: [string]
-    services: [string]
+    images: [Media]
+    services: [Service]
     get rating(): number
 
-    checkAvailability(checkInDate: Date, checkOutDate: Date,)
+    checkAvailability(checkInDate: Date, checkOutDate: Date)
+    addBooking(booking: Booking)
+    removeBooking(booking: Booking)
+    addService(service: Service, owner: User)
 
 }
 
@@ -60,12 +63,42 @@ class Review {
     rate: number
     author: User
 }
+class Service{
+    kind: ServiceType
+}
+enum ServiceType{
+    HOT_TUB
+    AIR_CONDITIONING
+    HEATING
+    FIREPLACE
+    FIRE_PIT
+    BBQ_GRILL
+    WIFI
+    REFRIGERATOR
+    MOUNTAIN_VIEW
+    LAKE_ACCESS
+    POOL
+}
+
+class Media {
+    source: string
+    kind: MediaType
+}
+
+enum MediaType {
+    PHOTO
+    VIDEO
+}
 
 class Payment{
     amount: number
 }
 
 Bungalow *- Review
+Bungalow *- Service
+Service --> ServiceType
+Bungalow *- Media
+Media --> MediaType
 User --> Review
 User "1" o-->"0..*" Booking
 Booking "1" o-->"1" User

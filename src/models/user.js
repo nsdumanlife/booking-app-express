@@ -1,5 +1,6 @@
 const Booking = require('./booking')
 const Review = require('./review')
+const Bungalow = require('./bungalow')
 
 class User {
 	constructor(firstName, lastName, email, age) {
@@ -8,7 +9,7 @@ class User {
 		this.email = email
 		this.age = age
 		this.bookings = []
-		this.reviews = []
+
 		this.ownedBungalows = []
 	}
 
@@ -24,8 +25,7 @@ class User {
 		if (bungalow.checkAvailability(checkInDate, checkOutDate)) {
 			const newBooking = new Booking(this, bungalow, checkInDate, checkOutDate)
 
-			bungalow.bookings.push(newBooking)
-			bungalow.bookedDates.push(...newBooking.bookingDays)
+			bungalow.addBooking(newBooking)
 			this.bookings.push(newBooking)
 
 			// TODO:
@@ -44,22 +44,8 @@ class User {
 	}
 
 	cancelBooking(booking) {
-		// remove the booked dates from bungalow's calendar
-		const checkInDateStr = `${booking.checkinDate.getDate()}-${
-			booking.checkinDate.getMonth() + 1
-		}-${booking.checkinDate.getFullYear()}`
-
-		const indexOfCheckInDate = booking.bungalow.bookedDates.indexOf(checkInDateStr)
-
-		booking.bungalow.bookedDates.splice(indexOfCheckInDate, booking.bookingDays.length)
-
 		// set booking status to cancelled
 		booking.cancel()
-
-		// remove booking from bungalow bookings
-		const indexOfBungalowBooking = booking.bungalow.bookings.indexOf(booking)
-
-		booking.bungalow.bookings.splice(indexOfBungalowBooking, 1)
 
 		// remove from user's bookings
 		const indexOfUserBooking = this.bookings.indexOf(booking)
@@ -68,6 +54,14 @@ class User {
 
 		// refund money to user
 		// send email to user
+	}
+
+	createBungalow(name, location, capacity, price) {
+		const bungalow = new Bungalow(name, location, capacity, price, this)
+
+		this.ownedBungalows.push(bungalow)
+
+		return bungalow
 	}
 }
 
