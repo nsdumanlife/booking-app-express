@@ -1,18 +1,18 @@
+const mongoose = require('mongoose')
 const Booking = require('./booking')
 const Review = require('./review')
 const Bungalow = require('./bungalow')
 
+const userSchema = new mongoose.Schema({
+	firstName: String,
+	lastName: String,
+	email: String,
+	age: Number,
+	bookings: [],
+	ownedBungalows: [],
+})
+
 class User {
-	constructor(firstName, lastName, email, age) {
-		this.firstName = firstName
-		this.lastName = lastName
-		this.email = email
-		this.age = age
-		this.bookings = []
-
-		this.ownedBungalows = []
-	}
-
 	get profile() {
 		return `${this.firstName} ${this.lastName} has ${this.bookings.length} ${
 			this.bookings.length <= 1 ? 'booking' : 'bookings'
@@ -65,4 +65,6 @@ class User {
 	}
 }
 
-module.exports = User
+userSchema.loadClass(User)
+
+module.exports = mongoose.model('User', userSchema)
