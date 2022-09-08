@@ -59,7 +59,7 @@ class User {
 	createBungalow(name, location, capacity, price) {
 		const bungalow = new Bungalow(name, location, capacity, price, this)
 
-		this.ownedBungalows.push(bungalow)
+		this.ownedBungalows.push(bungalow.id)
 
 		return bungalow
 	}

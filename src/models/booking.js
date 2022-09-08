@@ -4,8 +4,8 @@ const getDays = require('../helper/get-booking-days')
 class Booking {
 	constructor(guest, bungalow, checkInDate, checkOutDate) {
 		this.id = uuidv4()
-		this.guest = guest
-		this.bungalow = bungalow
+		this.guest = guest.firstName
+		this.bungalow = bungalow.id
 		this.checkInDate = checkInDate
 		this.checkOutDate = checkOutDate
 		this.isReviewed = false

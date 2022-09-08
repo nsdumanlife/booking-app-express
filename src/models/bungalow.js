@@ -30,7 +30,7 @@ class Bungalow {
 	}
 
 	addBooking(booking) {
-		this.bookings.push(booking)
+		this.bookings.push(booking.id)
 		this.bookedDates.push(...booking.bookingDays)
 	}
 
@@ -43,7 +43,7 @@ class Bungalow {
 		this.bookedDates.splice(indexOfCheckInDate, booking.bookingDays.length)
 
 		// remove booking from bungalow bookings
-		const indexOfBungalowBooking = this.bookings.indexOf(booking)
+		const indexOfBungalowBooking = this.bookings.indexOf(booking.id)
 
 		this.bookings.splice(indexOfBungalowBooking, 1)
 	}
