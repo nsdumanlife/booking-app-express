@@ -31,6 +31,6 @@ numan.createBungalow('turtle', 'Akbuk, Mugla', 2, 1750)
 faruk.book(bungalows[3], checkInDateFaruk, checkOutDateFaruk)
 faruk.review(bungalows[3], 'That was an amazing vacation!', 5)
 
-console.log(numan)
+// console.log(numan)
 
 module.exports = { bungalows, users, numan, loggedInUser: numan }
