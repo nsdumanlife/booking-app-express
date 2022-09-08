@@ -1,11 +1,16 @@
 const mongoose = require('mongoose')
-// const { v4: uuidv4 } = require('uuid')
 const getDays = require('../helper/get-booking-days')
 
 const bookingSchema = new mongoose.Schema({
 	id: Number,
-	guest: String, // change to user obj
-	bungalow: Number, // change to bungalow obj
+	guest: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User',
+	},
+	bungalow: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Bungalow',
+	},
 	checkInDate: Date,
 	checkOutDate: Date,
 	isReviewed: Boolean,

@@ -3,6 +3,7 @@ const express = require('express')
 const { bungalows } = require('../models')
 const { loggedInUser } = require('../models')
 const { getDays } = require('../models')
+const Bungalow = require('../models')
 
 const router = express.Router()
 
@@ -37,8 +38,8 @@ router.get('/', (req, res) => {
 // 	return res.redirect('/bungalows')
 // })
 
-router.get('/:bungalowId', (req, res) => {
-	const selectedBungalow = bungalows.find(bungalow => bungalow.id === req.params.bungalowId)
+router.get('/:bungalowId', async (req, res) => {
+	const selectedBungalow = await Bungalow.findById(bungalow => bungalow.id === req.params.bungalowId)
 
 	// if (bungalow) res.send(flatted.toJSON(bungalow))
 	if (selectedBungalow)

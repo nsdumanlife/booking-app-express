@@ -1,5 +1,4 @@
 const mongoose = require('mongoose')
-const { v4: uuidv4 } = require('uuid')
 const getDays = require('../helper/get-booking-days')
 
 const bungalowSchema = new mongoose.Schema({
@@ -8,12 +7,35 @@ const bungalowSchema = new mongoose.Schema({
 	location: String,
 	capacity: Number,
 	price: Number,
-	bookings: [],
+	bookings: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Booking',
+		},
+	],
 	bookedDates: [],
-	reviews: [],
-	images: [],
-	services: [],
-	owner: String,
+	reviews: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Review',
+		},
+	],
+	images: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Image',
+		},
+	],
+	services: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Service',
+		},
+	],
+	owner: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User',
+	},
 })
 class Bungalow {
 	get rating() {
@@ -29,7 +51,7 @@ class Bungalow {
 	}
 
 	addBooking(booking) {
-		this.bookings.push(booking.id)
+		this.bookings.push(booking)
 		this.bookedDates.push(...booking.bookingDays)
 	}
 
@@ -42,7 +64,7 @@ class Bungalow {
 		this.bookedDates.splice(indexOfCheckInDate, booking.bookingDays.length)
 
 		// remove booking from bungalow bookings
-		const indexOfBungalowBooking = this.bookings.indexOf(booking.id)
+		const indexOfBungalowBooking = this.bookings.indexOf(booking)
 
 		this.bookings.splice(indexOfBungalowBooking, 1)
 	}

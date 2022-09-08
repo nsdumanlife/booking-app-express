@@ -1,8 +1,8 @@
-class Service {
-	constructor(kind) {
-		this.kind = kind
-	}
-}
+const mongoose = require('mongoose')
+
+const serviceSchema = new mongoose.Schema({
+	kind: String,
+})
 
 const ServiceType = {
 	HOT_TUB: 'hot tub',
@@ -18,4 +18,4 @@ const ServiceType = {
 	POOL: 'pool',
 }
 
-module.exports = { Service, ServiceType }
+module.exports = mongoose.model('Service', serviceSchema)

@@ -8,8 +8,18 @@ const userSchema = new mongoose.Schema({
 	lastName: String,
 	email: String,
 	age: Number,
-	bookings: [],
-	ownedBungalows: [],
+	bookings: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Booking',
+		},
+	],
+	ownedBungalows: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Bungalow',
+		},
+	],
 })
 
 class User {
@@ -23,7 +33,7 @@ class User {
 		if (checkInDate - Date.now() < 0) throw new Error('Enter a valid date for check-in date')
 
 		if (bungalow.checkAvailability(checkInDate, checkOutDate)) {
-			const newBooking = new Booking(this, bungalow, checkInDate, checkOutDate)
+			const newBooking = new Booking({ guest: this, bungalow, checkInDate, checkOutDate })
 
 			bungalow.addBooking(newBooking)
 			this.bookings.push(newBooking)
@@ -38,7 +48,7 @@ class User {
 	}
 
 	review(bungalow, message, rate) {
-		const review = new Review(message, rate, this)
+		const review = new Review({ message, rate, author: this })
 
 		bungalow.reviews.push(review)
 	}
@@ -57,9 +67,9 @@ class User {
 	}
 
 	createBungalow(name, location, capacity, price) {
-		const bungalow = new Bungalow(name, location, capacity, price, this)
+		const bungalow = new Bungalow({ name, location, capacity, price, owner: this })
 
-		this.ownedBungalows.push(bungalow.id)
+		this.ownedBungalows.push(bungalow)
 
 		return bungalow
 	}
