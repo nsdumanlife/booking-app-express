@@ -1,9 +1,17 @@
+const mongoose = require('mongoose')
+
+const reviewSchema = new mongoose.Schema({
+	text: String,
+	rate: Number,
+	author: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User',
+	},
+})
 class Review {
-	constructor(text, rate, author) {
-		this.text = text
-		this.rate = rate
-		this.author = author
-	}
+	// Add methods here
 }
 
-module.exports = Review
+reviewSchema.loadClass(Review)
+
+module.exports = mongoose.model('Review', reviewSchema)
