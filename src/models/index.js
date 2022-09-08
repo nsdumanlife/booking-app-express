@@ -10,12 +10,18 @@ async function main() {
 	numan = signUp('Numan', 'Duman', 'nsduman@gmail.com', 29)
 	const faruk = signUp('Faruk', 'Duman', 'f@gmail.com', 26)
 	// users.push(numan, faruk)
-	;[numan, faruk].forEach(user => user.save())
+	// ;[numan, faruk].forEach(user => user.save())
 
-	const tepe = new Bungalow('Tepe', 'Sapanca, Sakarya', 8, 950, 'Faruk')
-	const lion = new Bungalow('Lion', 'Kumbag, Tekirdag', 4, 1250, 'Faruk')
-	const dogancay = new Bungalow('Dogancay', 'Geyve, Sakarya, Turkey', 5, 1150, 'Faruk')
-	const oxygen = new Bungalow('Oxygen', 'Geyve, Sakarya', 8, 950, 'Faruk')
+	const tepe = new Bungalow({ name: 'Tepe', location: 'Sapanca, Sakarya', capacity: 8, price: 950, owner: 'Faruk' })
+	const lion = new Bungalow({ name: 'Lion', location: 'Kumbag, Tekirdag', capacity: 4, price: 1250, owner: 'Faruk' })
+	const dogancay = new Bungalow({
+		name: 'Dogancay',
+		location: 'Geyve, Sakarya, Turkey',
+		capacity: 5,
+		price: 1150,
+		owner: 'Faruk',
+	})
+	const oxygen = new Bungalow({ name: 'Oxygen', location: 'Geyve, Sakarya', capacity: 8, price: 950, owner: 'Faruk' })
 	oxygen.images.push(...imagesOfOxygen)
 	oxygen.services.push('internet', 'barbecue', 'hot tub')
 	bungalows.push(tepe, lion, dogancay, oxygen)
@@ -33,7 +39,7 @@ async function main() {
 	numan.book(bungalows[1], checkInDate1, checkOutDate1)
 	numan.book(bungalows[2], checkInDate2, checkOutDate2)
 	// numan.cancelBooking(numan.bookings[0])
-	numan.createBungalow('turtle', 'Akbuk, Mugla', 2, 1750)
+	numan.createBungalow({ name: 'turtle', location: 'Akbuk, Mugla', capacity: 2, price: 1750 })
 	faruk.book(bungalows[3], checkInDateFaruk, checkOutDateFaruk)
 	faruk.review(bungalows[3], 'That was an amazing vacation!', 5)
 

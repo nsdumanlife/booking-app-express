@@ -1,22 +1,21 @@
+const mongoose = require('mongoose')
 const { v4: uuidv4 } = require('uuid')
 const getDays = require('../helper/get-booking-days')
 
+const bungalowSchema = new mongoose.Schema({
+	id: Number,
+	name: String,
+	location: String,
+	capacity: Number,
+	price: Number,
+	bookings: [],
+	bookedDates: [],
+	reviews: [],
+	images: [],
+	services: [],
+	owner: String,
+})
 class Bungalow {
-	constructor(name, location, capacity, price, owner) {
-		this.id = uuidv4()
-		this.name = name
-		this.location = location
-		this.bookings = []
-		this.bookedDates = []
-		this.capacity = capacity
-		this.price = price
-		this.reviews = [] // user's reviews
-		this.images = []
-		this.services = [] // internet, barbecue,hot tub, pool, hot water, kitchen etc.
-
-		this.owner = owner
-	}
-
 	get rating() {
 		const sumOfReviewsRates = this.reviews.reduce((sum, review) => sum + Number(review.rate), 0)
 
@@ -52,5 +51,6 @@ class Bungalow {
 		if (this.owner === owner) this.services.push(service)
 	}
 }
+bungalowSchema.loadClass(Bungalow)
 
-module.exports = Bungalow
+module.exports = mongoose.model('Bungalow', bungalowSchema)
