@@ -1,17 +1,18 @@
-const { v4: uuidv4 } = require('uuid')
+const mongoose = require('mongoose')
+// const { v4: uuidv4 } = require('uuid')
 const getDays = require('../helper/get-booking-days')
 
-class Booking {
-	constructor(guest, bungalow, checkInDate, checkOutDate) {
-		this.id = uuidv4()
-		this.guest = guest.firstName
-		this.bungalow = bungalow.id
-		this.checkInDate = checkInDate
-		this.checkOutDate = checkOutDate
-		this.isReviewed = false
-		this.cancelled = false
-	}
+const bookingSchema = new mongoose.Schema({
+	id: Number,
+	guest: String, // change to user obj
+	bungalow: Number, // change to bungalow obj
+	checkInDate: Date,
+	checkOutDate: Date,
+	isReviewed: Boolean,
+	cancelled: Boolean,
+})
 
+class Booking {
 	get bookingDays() {
 		return getDays(this.checkInDate, this.checkOutDate)
 	}
@@ -35,4 +36,6 @@ class Booking {
 	}
 }
 
-module.exports = Booking
+bookingSchema.loadClass(Booking)
+
+module.exports = mongoose.model('Booking', bookingSchema)
