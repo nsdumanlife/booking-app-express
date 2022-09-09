@@ -2,21 +2,11 @@ const Bungalow = require('./bungalow')
 const User = require('./user')
 const Image = require('./image')
 
-let numan
-let faruk
-// const loggedInUser = { firstName: 'numan', lastName: 'duman', email: 'nsduman@gmail.com', age: 29 }
-let loggedInUser = null
-
-async function getLoggedInUser() {
-	loggedInUser = await User.findById('631a3c3477b43133a0d1db5c')
-	return loggedInUser
-}
-
 async function main() {
 	// Users
-	numan = await User.create({ firstName: 'Numan', lastName: 'Duman', email: 'nsduman@gmail.com', age: 29 })
+	const numan = await User.create({ firstName: 'Numan', lastName: 'Duman', email: 'nsduman@gmail.com', age: 29 })
 
-	faruk = await User.create({ firstName: 'Faruk', lastName: 'Duman', email: 'f@gmail.com', age: 26 })
+	const faruk = await User.create({ firstName: 'Faruk', lastName: 'Duman', email: 'f@gmail.com', age: 26 })
 
 	// Bungalows
 	const tepe = await Bungalow.create({
@@ -87,7 +77,9 @@ async function main() {
 	// // console.log(numan)
 }
 
-getLoggedInUser()
 main()
 
-module.exports = { loggedInUser }
+module.exports = async function getLoggedInUser() {
+	const loggedInUser = await User.findOne({ firstName: 'Numan' })
+	return loggedInUser
+}
