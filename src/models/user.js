@@ -48,8 +48,8 @@ class User {
 		if (bungalow.checkAvailability(checkInDate, checkOutDate)) {
 			const newBooking = await Booking.create({ guest: this, bungalow, checkInDate, checkOutDate })
 
-			bungalow.addBooking(newBooking)
-			this.bookings.push(newBooking)
+			await bungalow.addBooking(newBooking)
+			await this.bookings.push(newBooking)
 
 			await this.save()
 			await bungalow.save()

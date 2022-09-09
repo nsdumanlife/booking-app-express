@@ -9,6 +9,7 @@ let loggedInUser = null
 
 async function getLoggedInUser() {
 	loggedInUser = await User.findById('631a3c3477b43133a0d1db5c')
+	return loggedInUser
 }
 
 async function main() {
@@ -85,6 +86,7 @@ async function main() {
 
 	// // console.log(numan)
 }
+
 getLoggedInUser()
 main()
 

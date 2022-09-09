@@ -1,11 +1,11 @@
 const express = require('express')
 const Bungalow = require('../models/bungalow')
-const user = require('../models/index')
+const loggedInUser = require('../models/index')
+// const User = require('../models/user')
 
 const router = express.Router()
 
 /* GET bungalows listing. */
-
 router.get('/', async (req, res, next) => {
 	try {
 		const bungalows = await Bungalow.find({})
@@ -17,12 +17,12 @@ router.get('/', async (req, res, next) => {
 		// }
 
 		// res.send(bungalows)
-		return res.render('bungalows', { title: `Rent a Bungalow for Your Next Escape`, bungalows, user })
+		return res.render('bungalows', { title: `Rent a Bungalow for Your Next Escape`, bungalows, user: loggedInUser })
 	} catch (e) {
 		return next(e)
 	}
 })
-
+/* GET bungalow detail page. */
 router.get('/:bungalowId', async (req, res, next) => {
 	try {
 		const bungalow = await Bungalow.findById(req.params.bungalowId)
@@ -34,7 +34,7 @@ router.get('/:bungalowId', async (req, res, next) => {
 		next(e)
 	}
 })
-
+/* POST/create new booking. */
 router.post('/:bungalowId', async (req, res) => {
 	const bungalow = await Bungalow.findById(req.params.bungalowId)
 	// const user = await User.findById('631a3c3477b43133a0d1db5c')
@@ -45,15 +45,16 @@ router.post('/:bungalowId', async (req, res) => {
 			error: { status: 404 },
 			message: `No bungalow found`,
 		})
-	user.book(bungalow, new Date(req.body.checkInDate), new Date(req.body.checkOutDate))
+
+	await loggedInUser.book(bungalow, new Date(req.body.checkInDate), new Date(req.body.checkOutDate))
 
 	return res.redirect('/bookings')
 })
-
+/* POST/create new review. */
 router.post('/:bungalowId/reviews', async (req, res) => {
 	const bungalow = await Bungalow.findById(req.params.bungalowId)
 	// const user = await User.findById('631a3c3477b43133a0d1db5c')
-
+	console.log(loggedInUser)
 	if (!bungalow)
 		return res.render('error', {
 			error: { status: 404 },
@@ -63,7 +64,7 @@ router.post('/:bungalowId/reviews', async (req, res) => {
 	// const review = await Review.create({ text: req.body.text, rate: req.body.rate, author: user })
 	// bungalow.reviews.push(review)
 	// await bungalow.save()
-	user.review(bungalow, req.body.text, req.body.rate)
+	loggedInUser.review(bungalow, req.body.text, req.body.rate)
 	return res.redirect(`/bungalows/${bungalow.id}`)
 })
 
