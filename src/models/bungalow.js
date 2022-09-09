@@ -1,16 +1,30 @@
 const mongoose = require('mongoose')
+const autopopulate = require('mongoose-autopopulate')
 const getDays = require('../helper/get-booking-days')
 
 const bungalowSchema = new mongoose.Schema({
-	id: Number,
-	name: String,
-	location: String,
-	capacity: Number,
-	price: Number,
+	name: {
+		type: String,
+		unique: true,
+		required: true,
+	},
+	location: {
+		type: String,
+		required: true,
+	},
+	capacity: {
+		type: Number,
+		required: true,
+	},
+	price: {
+		type: Number,
+		required: true,
+	},
 	bookings: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Booking',
+			autopopulate: { maxDepth: 2 },
 		},
 	],
 	bookedDates: [],
@@ -18,12 +32,14 @@ const bungalowSchema = new mongoose.Schema({
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Review',
+			autopopulate: { maxDepth: 2 },
 		},
 	],
 	images: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Image',
+			autopopulate: { maxDepth: 1 },
 		},
 	],
 	services: [
@@ -35,6 +51,7 @@ const bungalowSchema = new mongoose.Schema({
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: 'User',
+		autopopulate: { maxDepth: 1 },
 	},
 })
 class Bungalow {
@@ -50,12 +67,14 @@ class Bungalow {
 		return newBookingDays.every(date => !this.bookedDates.includes(date))
 	}
 
-	addBooking(booking) {
+	async addBooking(booking) {
 		this.bookings.push(booking)
 		this.bookedDates.push(...booking.bookingDays)
+
+		await this.save()
 	}
 
-	removeBooking(booking) {
+	async removeBooking(booking) {
 		// remove the booked dates from bungalow's calendar
 		const checkInDateStr = getDays(booking.checkInDate, booking.checkOutDate)
 
@@ -67,6 +86,8 @@ class Bungalow {
 		const indexOfBungalowBooking = this.bookings.indexOf(booking)
 
 		this.bookings.splice(indexOfBungalowBooking, 1)
+
+		await this.save()
 	}
 
 	addService(service, owner) {
@@ -74,5 +95,6 @@ class Bungalow {
 	}
 }
 bungalowSchema.loadClass(Bungalow)
+bungalowSchema.plugin(autopopulate)
 
 module.exports = mongoose.model('Bungalow', bungalowSchema)

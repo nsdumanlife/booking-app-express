@@ -5,10 +5,10 @@ const imageSchema = new mongoose.Schema({
 	alt: String,
 })
 
-class Image {
-	// add methods here
-}
+// class Image {
+// 	// add methods here
+// }
 
-imageSchema.loadClass(Image)
+// imageSchema.loadClass(Image)
 
 module.exports = mongoose.model('Image', imageSchema)

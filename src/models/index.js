@@ -2,14 +2,19 @@ const Bungalow = require('./bungalow')
 const User = require('./user')
 const Image = require('./image')
 
-const users = []
-const bungalows = []
 let numan
 let faruk
+// const loggedInUser = { firstName: 'numan', lastName: 'duman', email: 'nsduman@gmail.com', age: 29 }
+let loggedInUser = null
+
+async function getLoggedInUser() {
+	loggedInUser = await User.findById('631a3c3477b43133a0d1db5c')
+}
 
 async function main() {
 	// Users
 	numan = await User.create({ firstName: 'Numan', lastName: 'Duman', email: 'nsduman@gmail.com', age: 29 })
+
 	faruk = await User.create({ firstName: 'Faruk', lastName: 'Duman', email: 'f@gmail.com', age: 26 })
 
 	// Bungalows
@@ -43,24 +48,20 @@ async function main() {
 	})
 
 	// Images
-	const imageOxygenOutside = await Image.create({
-		src: 'https://sapancaotelleri.com.tr/plugin/thumb/phpThumb.php?src=https://skttur.travelus.pro/assets/travelus/upload/files/Sapanca-oksijen-bungalov_8kEsDe0.jpg&h=768&w=1167&iar=1&q=95&f=webp&hash=6d430ca401ea0418f2e2e0ba5efd0022&zc=1',
-		alt: 'Detailed photos of bungalow Oxygen',
-	})
 
 	const imageOxygenFrontside = await Image.create({
 		src: 'https://img.otelz.com/s3/turkiye/sakarya/sapanca/whatsappimage20211205at15.50.1624298f7c7559245cfabbd1a81c66dc930.jpg',
-		alt: 'Detailed photos of bungalow Oxygen',
+		alt: 'Frontside photo of bungalow Oxygen',
 	})
 
 	const imageOxygenInside = await Image.create({
 		src: 'https://oxygenbungalov.com/tema/genel/uploads/odalar/kapak/oksijen_bungalov.jpeg',
-		alt: 'Detailed photos of bungalow Oxygen',
+		alt: 'Inside photo of bungalow Oxygen',
 	})
 
-	oxygen.images.push(imageOxygenOutside, imageOxygenFrontside, imageOxygenInside)
+	oxygen.images.push(imageOxygenFrontside, imageOxygenInside)
+	await oxygen.save()
 	// oxygen.services.push('internet', 'barbecue', 'hot tub')
-	// bungalows.push(tepe, lion, dogancay, oxygen)
 
 	const checkInDate = new Date('10/22/2022')
 	const checkOutDate = new Date('10/29/2022')
@@ -75,13 +76,16 @@ async function main() {
 	await numan.book(dogancay, checkInDate1, checkOutDate1)
 	await numan.book(tepe, checkInDate2, checkOutDate2)
 	// numan.cancelBooking(lion)
-	const turtle = numan.createBungalow('turtle', 'Akbuk, Mugla', 2, 1750)
+	await faruk.book(oxygen, checkInDate2, checkOutDate2)
+	await faruk.review(oxygen, 'Amazing view!', 5)
+
+	const turtle = await numan.createBungalow('turtle', 'Akbuk, Mugla', 2, 1750, 'pool')
 	await faruk.book(turtle, checkInDateFaruk, checkOutDateFaruk)
-	// await faruk.review(turtle, 'That was an amazing vacation!', 5)
+	await faruk.review(turtle, 'That was an amazing vacation!', 5)
 
-	// console.log(numan)
+	// // console.log(numan)
 }
-
+getLoggedInUser()
 main()
 
-module.exports = { bungalows, users, numan, loggedInUser: numan }
+module.exports = { loggedInUser }

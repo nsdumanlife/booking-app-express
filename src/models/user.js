@@ -1,23 +1,36 @@
 const mongoose = require('mongoose')
+const autopopulate = require('mongoose-autopopulate')
 const Booking = require('./booking')
 const Review = require('./review')
 const Bungalow = require('./bungalow')
 
 const userSchema = new mongoose.Schema({
-	firstName: String,
-	lastName: String,
-	email: String,
+	firstName: {
+		type: String,
+		required: true,
+	},
+	lastName: {
+		type: String,
+		required: true,
+	},
+	email: {
+		type: String,
+		unique: true,
+		required: true,
+	},
 	age: Number,
 	bookings: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Booking',
+			autopopulate: { maxDepth: 2 },
 		},
 	],
 	ownedBungalows: [
 		{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'Bungalow',
+			autopopulate: { maxDepth: 1 },
 		},
 	],
 })
@@ -29,14 +42,17 @@ class User {
 		}`
 	}
 
-	book(bungalow, checkInDate, checkOutDate) {
+	async book(bungalow, checkInDate, checkOutDate) {
 		if (checkInDate - Date.now() < 0) throw new Error('Enter a valid date for check-in date')
 
 		if (bungalow.checkAvailability(checkInDate, checkOutDate)) {
-			const newBooking = new Booking({ guest: this, bungalow, checkInDate, checkOutDate })
+			const newBooking = await Booking.create({ guest: this, bungalow, checkInDate, checkOutDate })
 
 			bungalow.addBooking(newBooking)
 			this.bookings.push(newBooking)
+
+			await this.save()
+			await bungalow.save()
 
 			// TODO:
 			// do payment
@@ -47,13 +63,16 @@ class User {
 		}
 	}
 
-	review(bungalow, message, rate) {
-		const review = new Review({ message, rate, author: this })
+	async review(bungalow, text, rate) {
+		const review = await Review.create({ text, rate, author: this })
 
 		bungalow.reviews.push(review)
+
+		await bungalow.save()
+		await this.save()
 	}
 
-	cancelBooking(booking) {
+	async cancelBooking(booking) {
 		// set booking status to cancelled
 		booking.cancel()
 
@@ -62,19 +81,26 @@ class User {
 
 		this.bookings.splice(indexOfUserBooking, 1)
 
+		await this.save()
+		await booking.save()
+
 		// refund money to user
 		// send email to user
 	}
 
-	createBungalow(name, location, capacity, price) {
-		const bungalow = new Bungalow({ name, location, capacity, price, owner: this })
+	async createBungalow(name, location, capacity, price) {
+		// check services, maybe create addService method at bungalow model?
+		const bungalow = await Bungalow.create({ name, location, capacity, price, owner: this })
 
 		this.ownedBungalows.push(bungalow)
+
+		await this.save()
 
 		return bungalow
 	}
 }
 
 userSchema.loadClass(User)
+userSchema.plugin(autopopulate)
 
 module.exports = mongoose.model('User', userSchema)
