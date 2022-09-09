@@ -1,5 +1,4 @@
 const express = require('express')
-const { bungalows } = require('../models')
 
 const router = express.Router()
 

@@ -1,22 +1,60 @@
-const { v4: uuidv4 } = require('uuid')
+const mongoose = require('mongoose')
+const autopopulate = require('mongoose-autopopulate')
 const getDays = require('../helper/get-booking-days')
 
+const bungalowSchema = new mongoose.Schema({
+	name: {
+		type: String,
+		unique: true,
+		required: true,
+	},
+	location: {
+		type: String,
+		required: true,
+	},
+	capacity: {
+		type: Number,
+		required: true,
+	},
+	price: {
+		type: Number,
+		required: true,
+	},
+	bookings: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Booking',
+			autopopulate: { maxDepth: 2 },
+		},
+	],
+	bookedDates: [],
+	reviews: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Review',
+			autopopulate: { maxDepth: 2 },
+		},
+	],
+	images: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Image',
+			autopopulate: { maxDepth: 1 },
+		},
+	],
+	services: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'Service',
+		},
+	],
+	owner: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User',
+		autopopulate: { maxDepth: 1 },
+	},
+})
 class Bungalow {
-	constructor(name, location, capacity, price, owner) {
-		this.id = uuidv4()
-		this.name = name
-		this.location = location
-		this.bookings = []
-		this.bookedDates = []
-		this.capacity = capacity
-		this.price = price
-		this.reviews = [] // user's reviews
-		this.images = []
-		this.services = [] // internet, barbecue,hot tub, pool, hot water, kitchen etc.
-
-		this.owner = owner
-	}
-
 	get rating() {
 		const sumOfReviewsRates = this.reviews.reduce((sum, review) => sum + Number(review.rate), 0)
 
@@ -29,12 +67,14 @@ class Bungalow {
 		return newBookingDays.every(date => !this.bookedDates.includes(date))
 	}
 
-	addBooking(booking) {
+	async addBooking(booking) {
 		this.bookings.push(booking)
 		this.bookedDates.push(...booking.bookingDays)
+
+		await this.save()
 	}
 
-	removeBooking(booking) {
+	async removeBooking(booking) {
 		// remove the booked dates from bungalow's calendar
 		const checkInDateStr = getDays(booking.checkInDate, booking.checkOutDate)
 
@@ -46,11 +86,15 @@ class Bungalow {
 		const indexOfBungalowBooking = this.bookings.indexOf(booking)
 
 		this.bookings.splice(indexOfBungalowBooking, 1)
+
+		await this.save()
 	}
 
 	addService(service, owner) {
 		if (this.owner === owner) this.services.push(service)
 	}
 }
+bungalowSchema.loadClass(Bungalow)
+bungalowSchema.plugin(autopopulate)
 
-module.exports = Bungalow
+module.exports = mongoose.model('Bungalow', bungalowSchema)

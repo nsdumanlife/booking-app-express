@@ -1,53 +1,43 @@
 const express = require('express')
-// const flatted = require('flatted')
-const { bungalows } = require('../models')
-const { loggedInUser } = require('../models')
-const { getDays } = require('../models')
+const Bungalow = require('../models/bungalow')
+const user = require('../models/index')
 
 const router = express.Router()
 
 /* GET bungalows listing. */
-router.get('/', (req, res) => {
-	if (req.query.name) {
-		return res.send(bungalows.filter(bungalow => bungalow.name.toLowerCase() === req.query.name.toLowerCase()))
+
+router.get('/', async (req, res, next) => {
+	try {
+		const bungalows = await Bungalow.find({})
+
+		// const user = await User.findById('631a3c3477b43133a0d1db5c')
+
+		// if (req.query.name) {
+		// 	return res.send(bungalows.filter(bungalow => bungalow.name.toLowerCase() === req.query.name.toLowerCase()))
+		// }
+
+		// res.send(bungalows)
+		return res.render('bungalows', { title: `Rent a Bungalow for Your Next Escape`, bungalows, user })
+	} catch (e) {
+		return next(e)
 	}
-
-	if (req.body.checkInDate && req.body.checkOutDate) {
-		const dates = getDays(new Date(req.body.checkInDate), new Date(req.body.checkOutDate))
-
-		const filteredBungalows = bungalows.filter(b => b.bookedDates.some(date => !dates.includes(date)))
-
-		return res.render('bungalows', {
-			title: `Rent a Bungalow for Your Next Escape`,
-			filteredBungalows,
-			user: loggedInUser,
-		})
-	}
-	return res.render('bungalows', { title: `Rent a Bungalow for Your Next Escape`, bungalows, user: loggedInUser })
 })
 
-// router.post('/', (req, res) => {
-// 	const dates = getDays(new Date(req.body.checkInDate), new Date(req.body.checkOutDate))
-// 	const filteredBungalows = bungalows.filter(b => b.bookedDates.some(dates))
-// 	if (!filteredBungalows)
-// 		return res.render('error', {
-// 			error: { status: 404 },
-// 			message: `No bungalow found`,
-// 		})
-// 	return res.redirect('/bungalows')
-// })
+router.get('/:bungalowId', async (req, res, next) => {
+	try {
+		const bungalow = await Bungalow.findById(req.params.bungalowId)
 
-router.get('/:bungalowId', (req, res) => {
-	const selectedBungalow = bungalows.find(bungalow => bungalow.id === req.params.bungalowId)
-
-	// if (bungalow) res.send(flatted.toJSON(bungalow))
-	if (selectedBungalow)
-		res.render('bungalow', { title: `Bungalow ${selectedBungalow.name}`, bungalow: selectedBungalow })
-	else res.sendStatus(404)
+		// if (bungalow) res.send(bungalow)
+		if (bungalow) res.render('bungalow', { title: `Bungalow ${bungalow.name}`, bungalow })
+		else res.sendStatus(404)
+	} catch (e) {
+		next(e)
+	}
 })
 
-router.post('/:bungalowId', (req, res) => {
-	const bungalow = bungalows.find(bung => bung.id === req.params.bungalowId)
+router.post('/:bungalowId', async (req, res) => {
+	const bungalow = await Bungalow.findById(req.params.bungalowId)
+	// const user = await User.findById('631a3c3477b43133a0d1db5c')
 
 	// if (bungalow) res.send(flatted.toJSON(bungalow))
 	if (!bungalow)
@@ -55,13 +45,14 @@ router.post('/:bungalowId', (req, res) => {
 			error: { status: 404 },
 			message: `No bungalow found`,
 		})
-	loggedInUser.book(bungalow, new Date(req.body.checkInDate), new Date(req.body.checkOutDate))
+	user.book(bungalow, new Date(req.body.checkInDate), new Date(req.body.checkOutDate))
 
 	return res.redirect('/bookings')
 })
 
-router.post('/:bungalowId/reviews', (req, res) => {
-	const bungalow = bungalows.find(bung => bung.id === req.params.bungalowId)
+router.post('/:bungalowId/reviews', async (req, res) => {
+	const bungalow = await Bungalow.findById(req.params.bungalowId)
+	// const user = await User.findById('631a3c3477b43133a0d1db5c')
 
 	if (!bungalow)
 		return res.render('error', {
@@ -69,8 +60,10 @@ router.post('/:bungalowId/reviews', (req, res) => {
 			message: `No bungalow found`,
 		})
 
-	loggedInUser.review(bungalow, req.body.text, req.body.rate)
-
+	// const review = await Review.create({ text: req.body.text, rate: req.body.rate, author: user })
+	// bungalow.reviews.push(review)
+	// await bungalow.save()
+	user.review(bungalow, req.body.text, req.body.rate)
 	return res.redirect(`/bungalows/${bungalow.id}`)
 })
 
