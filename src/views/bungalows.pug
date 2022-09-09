@@ -5,7 +5,7 @@ block content
   h2 Here are some lovely bungalows
   each bungalow in bungalows
     .bungalow
-      form(action=`/bungalows/${bungalow.id}`, method='post')
+      form(action=`/bungalows/${bungalow.id}`, method='get')
 
         a(href=`/bungalows/${bungalow.id}`)
           h3 Bungalow #{bungalow.name}
