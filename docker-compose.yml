@@ -1,0 +1,17 @@
+version: '3'
+services:
+  app:
+    image: booking-app
+    build:
+      context: .
+      dockerfile: dockerfile
+    environment:
+      - MONGODB_CONNECTION_STRING=mongodb+srv://duman:yVj.sSq7KeXfvn@cluster0.dht8s4t.mongodb.net/booking-app?retryWrites=true&w=majority
+      # - MONGODB_CONNECTION_STRING=mongodb://mogno/booking-app
+    ports:
+      - 4000:4000
+      - 35729:35729
+    volumes:
+      - ./src:/app/src
+  mongo:
+    image: mongo
