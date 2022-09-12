@@ -4,7 +4,7 @@ services:
     image: booking-app
     build:
       context: .
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     environment:
       - MONGODB_CONNECTION_STRING=mongodb+srv://duman:yVj.sSq7KeXfvn@cluster0.dht8s4t.mongodb.net/booking-app?retryWrites=true&w=majority
       # - MONGODB_CONNECTION_STRING=mongodb://mogno/booking-app
@@ -15,3 +15,5 @@ services:
       - ./src:/app/src
   mongo:
     image: mongo
+    ports:
+      - 27017:27017
